@@ -67,4 +67,4 @@ for i in range(2, m_row + 1):
     address=add_search(cell_obj.value)
     sheet_obj.cell(row=i,column=4).value=address
 
-wb.save('college_list.xlsx')        #save file
+wb.save('list of colleges.xlsx')        #save file
