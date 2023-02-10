@@ -9,7 +9,7 @@ def matching(a, b):
     return SequenceMatcher(None, a, b).ratio()
 
 def add_search(college):
-    #requestheader copied from the browser
+                                                         #REQUEST COPIED FROM THE BROWSER
     address=' '
     header={
         'user-agent':'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/105.0.0.0 Safari/537.36',
@@ -18,22 +18,22 @@ def add_search(college):
         'accept-language':'en-US,en;q=0.9'
         }
 
-    #search url
+                                                         #SEARCH URL
     searchword=college.split(' ')
     URL="https://www.indcareer.com/find/all-colleges?qqq="+'+'.join(searchword)+'&submit=Search'
     print(URL)
 
     responses = requests.get(URL,headers=header)
     
-    html=BeautifulSoup(responses.content,"html.parser")
+    html=BeautifulSoup(responses.content,"html.parser")                        #PARSE HTML FILE
     
-    if responses.status_code==200:                               # check if response is successful
-        #selct div element which contains data      
+    if responses.status_code==200:                             # CHECK IF RESPONSE IS SUCCESSFUL
+                                                              #SELECT ELEMENT(DIV) WHICH CONTAINS DATA      
         maindiv=html.find('div',attrs={'class':'media'})
-        if maindiv!=None:                                          #check if there's info about college
+        if maindiv!=None:                                          #CHECK IF THERE IS INFO ABOUT COLLEGE
           if matching(maindiv.find('a').string,college)>=0.5:
               collegesite=maindiv.find('a')['href']
-              #send request to college specific webpage                 
+                                                            #SEND REQUEST TO A SPECIFIC PAGE OF COLLEGE                 
               responses = requests.get('https://www.indcareer.com/'+collegesite,headers=header,stream=True)
 
               if responses.status_code==200:
@@ -56,10 +56,10 @@ def add_search(college):
     return address
     pass
 
-# college_list is our excel file
-wb=openpyxl.load_workbook('college_list.xlsx')
+                                                              # list OF COLLEGES IS OUR EXCEL FILE
+wb=openpyxl.load_workbook('list of colleges.xlsx')
 sheet_obj = wb.active
-m_row = 502             #max rows
+m_row = 502                                                                 #MAXIMUM ROWS
 print(m_row)
 for i in range(2, m_row + 1):
     print(i)
@@ -67,4 +67,4 @@ for i in range(2, m_row + 1):
     address=add_search(cell_obj.value)
     sheet_obj.cell(row=i,column=4).value=address
 
-wb.save('list of colleges.xlsx')        #save file
+wb.save('list of colleges.xlsx')                                             #SAVE DATA TO FILE
